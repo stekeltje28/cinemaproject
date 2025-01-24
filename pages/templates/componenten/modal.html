@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="nl">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Voeg hier een beschrijving van je pagina toe.">
+    <meta name="keywords" content="sleutelwoord1, sleutelwoord2, sleutelwoord3">
+    <meta name="author" content="Thijs Stekelenburg">
+    <title>Home</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+</head>
+<style>
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+/* Modal inhoud */
+.modal-content {
+    position: relative;
+    width: 80%;
+    max-width: 600px;
+    background: linear-gradient(120deg, rgba(101, 101, 101, 0.7), rgba(0, 92, 206, 0.7));
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    max-height: 90%;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    transition: transform 0.3s ease-in-out;
+}
+
+/* Close button */
+.modal-content .close {
+    position: absolute;
+    top: -10px;
+    right: 10px;
+    width: 40px; /* Zorg ervoor dat de breedte en hoogte gelijk zijn */
+    height: 40px;
+    font-size: 20px;
+    color: #fff;
+    background: rgba(0, 0, 0, 0.5); /* Achtergrondkleur */
+    border: none;
+    border-radius: 50%; /* Maak de knop rond */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Schaduw voor diepte */
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    padding: 0; /* Geen extra padding die de vorm beïnvloedt */
+}
+
+.modal-content .close:hover {
+    background-color: rgba(0, 0, 0, 0.7); /* Hover achtergrondkleur */
+    transform: scale(1.1); /* Subtiel vergroot bij hover */
+}
+
+/* Modal titel styling */
+.modal-content h2 {
+    color: #fff;
+    font-size: 1.8rem;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.modal-content p {
+    color: white;
+}
+
+/* Button styling in de modal */
+.modal-content button {
+    padding: 12px 25px;
+    font-size: 1.1rem;
+    background-color: #0079ff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    margin-top: 20px;
+}
+
+.modal-content button:hover {
+    background-color: #005bb5;
+    transform: translateY(-2px); /* Kleine opheffing bij hover */
+}
+
+/* Input velden styling */
+.modal-content input[type="text"],
+.modal-content input[type="email"],
+.modal-content input[type="password"],
+.modal-content input[type="number"] {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-size: 1rem;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.modal-content input[type="text"]:focus,
+.modal-content input[type="email"]:focus,
+.modal-content input[type="password"]:focus,
+.modal-content input[type="number"]:focus {
+    border-color: #0079ff;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 121, 255, 0.5);
+}
+
+/* Label styling */
+.modal-content label {
+    color: white;
+    font-size: 1rem;
+    margin-bottom: 5px;
+    display: block;
+}
+
+/* Responsieve aanpassingen voor schermen kleiner dan 768px */
+@media (max-width: 768px) {
+    .modal-content {
+        width: 90%;
+        max-width: 500px;
+    }
+
+    .modal-content h2 {
+        font-size: 1.5rem;
+    }
+
+    .modal-content button {
+        font-size: 1rem;
+        padding: 10px 20px;
+    }
+
+    .modal-content .close {
+        font-size: 18px;
+        width: 35px;
+        height: 35px;
+    }
+}
+
+/* Responsieve aanpassingen voor schermen kleiner dan 480px */
+@media (max-width: 480px) {
+    .modal-content {
+        width: 95%;
+        max-width: 400px;
+    }
+
+    .modal-content h2 {
+        font-size: 1.3rem;
+    }
+
+    .modal-content button {
+        font-size: 1rem;
+        padding: 8px 16px;
+    }
+
+    .modal-content .close {
+        font-size: 16px;
+        width: 30px;
+        height: 30px;
+    }
+}
+
+/* Modal zichtbaar maken */
+.modal.show {
+    display: flex;
+    opacity: 1;
+}
+
+</style>
+<body>
+    <!-- Modal Styling -->
+    <div id="loggedInModal" class="modal" aria-hidden="true" aria-labelledby="loggedInModalTitle" tabindex="-1">
+        <div class="modal-content">
+            <button class="close" aria-label="Sluiten" onclick="closeModal()">&times;</button>
+            <h2 id="loggedInModalTitle">Hoi {{ user_data.naam }}, je bent al ingelogd!</h2>
+            <p>Wil je misschien naar je dashboard?</p>
+            <button style="margin-bottom: 20px" onclick="window.location.href = '/accounts/dashboard'">dashboard</button>
+            <p>Je kunt ook altijd nog uitloggen!</p>
+            <button onclick="logout()">Uitloggen</button>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal" aria-hidden="true" aria-labelledby="loginModalTitle" tabindex="-1">
+        <div class="modal-content">
+            <button class="close" aria-label="Sluiten" onclick="closeModal()">&times;</button>
+            <h2 id="loginModalTitle">Inloggen</h2>
+            <form id="loginForm" onsubmit="login(); return false;" method="POST">
+                {% csrf_token %}
+                <label for="email">E-mail:</label>
+                <input type="email" id="email" name="email" required>
+                <br>
+                <label for="password">Wachtwoord:</label>
+                <input type="password" id="password" name="password" required>
+                <br>
+                <button type="submit">Inloggen</button>
+            </form>
+            <p>Heb je nog geen account?
+                <a href="#" onclick="showRegister()">Registreer hier</a>
+            </p>
+        </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div id="registerModal" class="modal" aria-hidden="true" aria-labelledby="registerModalTitle" tabindex="-1">
+        <div class="modal-content">
+            <button class="close" aria-label="Sluiten" onclick="closeModal()">&times;</button>
+            <h2 id="registerModalTitle">Registreren</h2>
+            <form id="registerForm" onsubmit="createUser(); return false;" method="POST">
+                {% csrf_token %}
+                <label for="reg_first_name">Voornaam:</label>
+                <input type="text" id="reg_first_name" name="first_name" placeholder="Voornaam" required>
+                <br>
+                <label for="reg_last_name">Achternaam:</label>
+                <input type="text" id="reg_last_name" name="last_name" placeholder="Achternaam" required>
+                <br>
+                <label for="reg_email">E-mail:</label>
+                <input type="email" id="reg_email" name="email" required>
+                <br>
+                <label for="reg_leeftijd">Leeftijd:</label>
+                <input type="number" id="reg_leeftijd" name="leeftijd" required>
+                <br>
+                <label for="reg_password">Wachtwoord:</label>
+                <input type="password" id="reg_password" name="password1" required>
+                <br>
+                <label for="reg_password2">Herhaal wachtwoord:</label>
+                <input type="password" id="reg_password2" name="password2" required>
+                <br>
+                <button type="submit">Registreren</button>
+            </form>
+            <p>Heb je al een account?
+                <a href="#" onclick="showLogin()">Log in hier</a>
+            </p>
+        </div>
+    </div>
+
+    <script defer>
+
+function openModal(modalId) {
+    const modal = document.getElementById(modalId);
+    modal.classList.add('show'); // Modal krijgt de 'show' klasse
+}
+
+function closeModal() {
+    const modals = document.querySelectorAll('.modal');
+    modals.forEach(function(modal) {
+        modal.classList.remove('show');
+    });
+}
+
+function showLogin() {
+    closeModal();
+    openModal('loginModal');
+}
+
+function showRegister() {
+    closeModal();
+    openModal('registerModal');
+}
+
+window.addEventListener('click', function(event) {
+    const loginModal = document.getElementById("loginModal");
+    const registerModal = document.getElementById("registerModal");
+    if (event.target === loginModal || event.target === registerModal) {
+        closeModal(); // Sluit de modal als buiten de modal wordt geklikt
+    }
+});
+
+function login() {
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+
+    const data = {
+        email: email,
+        password: password,
+    };
+
+    fetch('accounts/login/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+        },
+        body: JSON.stringify(data),
+    })
+    .then(response => response.json()) // Respons omzetten naar JSON
+    .then(data => {
+        if (data.is_logged_in) {
+            alert(data.message);
+            window.location.href = '/';
+        } else {
+            alert(data.message || 'Inlogfout!');
+        }
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+        alert('Er is een fout opgetreden: ' + error);
+    });
+}
+
+
+
+function create_user() {
+    event.preventDefault()
+    document.querySelector('[name=csrfmiddlewaretoken]').value
+    const email = document.getElementById("reg_email").value;
+    const password1 = document.getElementById("reg_password").value;
+    const password2 = document.getElementById("reg_password2").value;
+    const name = document.getElementById('reg_first_name').value + " " + document.getElementById('reg_last_name').value;
+    const leeftijd = document.getElementById('reg_leeftijd').value;
+
+    const data = {
+        name: name,
+        email: email,
+        password1: password1,
+        password2: password2,
+        leeftijd: leeftijd
+    };
+
+    if (password1 !== password2) {
+        alert("Wachtwoorden komen niet overeen!");
+        return;
+    }
+
+    fetch('accounts/register/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+        },
+        body: JSON.stringify(data),
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            window.location.href = '{% url "dashboard" %}';
+            alert('welkom op je persoonlijke dashboard')
+        } else {
+            alert(data.error || 'Er ging iets mis. Probeer opnieuw.');
+        }
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
+};
+
+function checkUserLoggedIn() {
+    console.log('aan het checken of de user is ingelogd')
+     fetch('/accounts/check-logged-in/', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.is_logged_in) {
+            openModal('loggedInModal');  // Toon de ingelogd modal
+        } else {
+            openModal('loginModal');  // Toon de login modal als de gebruiker niet ingelogd is
+        }
+        return data.is_logged_in;
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+        return false;  // Fout bij het ophalen van de inlogstatus
+    });
+}
+
+function logout() {
+    fetch('/accounts/logout/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value // Zorg ervoor dat CSRF-token wordt meegegeven
+        },
+        body: JSON.stringify({})
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            localStorage.removeItem('userSession');
+            sessionStorage.removeItem('userSession');
+            window.location.href = '/';  // Redirect naar de homepage na succesvol uitloggen
+        } else {
+            alert('Er is iets misgegaan tijdens het uitloggen!');
+        }
+    })
+    .catch(error => {
+        console.error('Er is een fout opgetreden:', error);
+        alert('Er is een probleem opgetreden bij het uitloggen. Probeer het opnieuw.');
+    });
+}
+
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Voeg hier een beschrijving van je pagina toe.">
+    <meta name="keywords" content="sleutelwoord1, sleutelwoord2, sleutelwoord3">
+    <meta name="author" content="Thijs Stekelenburg">
+    <title>home</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+
+    <style>
+    body {
+        margin: 0;
+        padding: 0;
+        background-color: #111;
+    }
+
+    .card {
+        position: relative;
+        width: 120px;
+        height: 120px;
+        border-radius: 10px;
+        overflow: hidden;
+        z-index: 10000;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(120deg, rgba(0, 121, 255, 0.68), rgba(255, 255, 255, 0.3));
+        margin: 0 10px;
+        transition-duration: 1s;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .card:hover {
+        transition-duration: 1s;
+        transform: translateY(-10px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        cursor: pointer;
+    }
+
+    .card > i {
+        display: block;
+        font-size: 3rem;
+    }
+    .marquee img {
+        z-index: 99999;
+        transition-duration: 1s;
+    }
+
+    .marquee img:hover {
+        transition-duration: 1s;
+        transform: scale(110%);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        cursor: pointer;
+    }
+
+    main {
+        font-family: 'Montserrat', sans-serif;
+        background-color: #111;
+        color: #111;
+        height: auto;
+        margin-top: 20px;
+        display: block;
+        justify-content: center;
+        align-items: center;
+    }
+
+    :root {
+        --marquee-width: 100%;
+        --marquee-height: 200px;
+        --marquee-elements: 4;
+        --marquee-elements-displayed: 6;
+        --marquee-elements-width: calc(var(--marquee-width) / var(--marquee-elements-displayed));
+    }
+
+    .marquee {
+        width: var(--marquee-width);
+        height: var(--marquee-height);
+        background-color: #111;
+        color: #ffffff;
+        overflow: unset;
+        position: relative;
+        margin-bottom: 20px;
+        display: flex;
+        overflow: hidden; /* Zorg ervoor dat de inhoud niet buiten de container valt */        justify-content: center;
+        align-items: center;
+        --marquee-animation-duration: 20s;
+    }
+
+    .marquee:before, .marquee:after {
+        position: absolute;
+        top: 0;
+        width: 10rem;
+        height: 100%;
+        content: "";
+        z-index: 1;
+    }
+
+    .marquee:before {
+        left: 0;
+        background: linear-gradient(to right, #111 0%, transparent 90%);
+    }
+
+    .marquee:after {
+        right: 0;
+        background: linear-gradient(to left, #111 0%, transparent 90%);
+    }
+
+    .marquee-content {
+        list-style: none;
+        height: 100%;
+        display: flex;
+        animation: scrolling var(--marquee-animation-duration) linear infinite;
+        justify-content: center;
+        align-items: center;
+    }
+
+    @keyframes scrolling {
+        0% { transform: translateX(0); }
+        100% { transform: translateX(calc(-1 * var(--marquee-elements-width) * var(--marquee-elements))); }
+    }
+
+    .marquee-content li {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: var(--marquee-elements-width);
+        height: auto;
+        font-size: calc(var(--marquee-height) / 4);
+        flex-shrink: 0;
+        white-space: nowrap;
+        padding: 0 10px;
+        flex-direction: column;
+    }
+
+    .marquee-content li img {
+        max-height: 90%;
+        max-width: 90%;
+        object-fit: contain;
+    }
+
+    .marquee-content li span {
+        font-size: calc(var(--marquee-height) / 6);
+    }
+
+    .name-fields {
+    display: flex;
+    gap: 10px;
+    }
+
+    .name-fields input {
+        flex: 1;
+        padding: 5px;
+        box-sizing: border-box;
+    }
+
+
+    </style>
+</head>
+
+<body>
+    {% include 'componenten/navbar.html' %}
+    {% include 'componenten/header.html' %}
+
+    <main style="margin-top: 50px">
+        <div class="marquee">
+            <ul class="marquee-content">
+                <li><a href="#"><img src="{% static 'img/napoleon.jpg' %}" alt="niks" style="width: 150px; height: 280px"/></a></li>
+                <li><a href="#"><img src="{% static 'img/tempete.jpg' %}" alt="niks" style="width: 150px; height: 280px"/></a></li>
+                <li><a href="#"><img src="{% static 'img/tomb.jpg' %}" alt="niks" style="width: 150px; height: 280px"/></a></li>
+            </ul>
+        </div>
+
+        <div class="marquee">
+            <ul class="marquee-content">
+                <li><a href="#"><img src="{% static 'img/napoleon.jpg' %}" alt="niks" style="width: 150px; height: 280px"/></a></li>
+                <li><a href="#"><img src="{% static 'img/tempete.jpg' %}" alt="niks" style="width: 150px; height: 280px"/></a></li>
+                <li><a href="#"><img src="{% static 'img/tomb.jpg' %}" alt="niks" style="width: 150px; height: 280px"/></a></li>
+            </ul>
+        </div>
+
+        <div class="marquee">
+            <ul class="marquee-content">
+                <li><a href="#"><img src="{% static 'img/napoleon.jpg' %}" alt="niks" style="width: 150px; height: 280px"/></a></li>
+                <li><a href="#"><img src="{% static 'img/tempete.jpg' %}" alt="niks" style="width: 150px; height: 280px"/></a></li>
+                <li><a href="#"><img src="{% static 'img/tomb.jpg' %}" alt="niks" style="width: 150px; height: 280px"/></a></li>
+            </ul>
+        </div>
+    </main>
+
+    {% include 'componenten/footer.html' %}
+    <script>
+// Functie om naar beneden te scrollen
+function scrollDown() {
+    window.scrollBy({
+        top: window.innerHeight - 100,
+        behavior: 'smooth'
+    });
+}
+
+// Marquee functionaliteit voor het toevoegen van herhalende items
+function initMarquees() {
+    const marquees = document.querySelectorAll('.marquee');
+
+    marquees.forEach((marquee) => {
+        const root = document.documentElement;
+        const marqueeContent = marquee.querySelector('.marquee-content');
+        const marqueeItems = Array.from(marqueeContent.children);
+
+        // Bepaal hoeveel items getoond moeten worden
+        const marqueeElementsDisplayed = parseInt(getComputedStyle(root).getPropertyValue('--marquee-elements-displayed'), 10);
+        const marqueeItemsCount = marqueeItems.length;
+
+        // Herhaal de items tot er genoeg zijn voor een vloeiende beweging
+        while (marqueeContent.children.length < marqueeElementsDisplayed * 2) {
+            marqueeItems.forEach(item => {
+                marqueeContent.appendChild(item.cloneNode(true));
+            });
+        }
+
+        // Stel een willekeurige duur in voor de animatie
+        const randomDuration = (Math.random() * 10 + 10).toFixed(1); // Tussen 10 en 20 seconden
+        marquee.style.setProperty('--marquee-animation-duration', `${randomDuration}s`);
+    });
+}
+
+document.addEventListener('DOMContentLoaded', initMarquees);
+
+
+    </script>
+</body>
+</html>
