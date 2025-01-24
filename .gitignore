@@ -1,0 +1,20 @@
+# Python bytecode
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+
+# IDE files
+.idea/
+
+# Virtual environment
+venv/
+env/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Specifieke mappen en bestanden die niet gevolgd moeten worden
+temp-repo/
+new-cinemaproject/
